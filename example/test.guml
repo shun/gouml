@@ -1,0 +1,15 @@
+@startuml
+start
+
+:nd1;
+if nt1 {
+    :nd2;
+} elseif nt2 {
+    :nd3;
+} else {
+    :nd4;
+}
+
+end
+@enduml
+

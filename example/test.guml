@@ -1,7 +1,9 @@
-@startuml
+type=act
+
 start
 
 :nd1;
+
 if nt1 {
     :nd2;
 } elseif nt2 {
@@ -10,6 +12,15 @@ if nt1 {
     :nd4;
 }
 
-end
-@enduml
+:nd5;
 
+Loop aaa {
+    if nt5 {
+        :nd6;
+    } else {
+        :nd7;
+    }
+}
+:nd9;
+
+end

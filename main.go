@@ -451,9 +451,83 @@ func execute() {
 		}
 	}
 
-	output += "}\n"
+    output += makeRank(decList, TypeDecision)
+    output += makeRank(lpList, TypeLoop)
+//    for idx := 0; idx < len(decList); idx++ {
+//        dec := decList[idx]
+//
+//        cnt := 0
+//        tmp := "{rank = same; dec1; "
+//        for i, v := range dec.children {
+//            if v.nodetype == TypeLoop {
+//                tmp += fmt.Sprintf("lp%d; ", getIndex(lpList, v)+1)
+//                cnt++
+//            } else {
+//                tmp += fmt.Sprintf("dec%d; ", getIndex(decList, v)+1)
+//                cnt++
+//            }
+//            tmp += "}\n"
+//        }
+//        if cnt > 0 {
+//            output += tmp
+//        }
+//    }
+//
+//    for idx :=0; idx < len(lpList); idx++ {
+//        lp := lpList[idx]
+//
+//        cnt := 0
+//        tmp := "{rank = same; lp1; "
+//        for i, v := range lp.children {
+//            if v.nodetype == TypeLoop {
+//                tmp += fmt.Sprintf("lp%d; ", getIndex(lpList, v)+1)
+//                cnt++
+//            } else {
+//                tmp += fmt.Sprintf("dec%d; ", getIndex(decList, v)+1)
+//                cnt++
+//            }
+//            tmp += "}\n"
+//        }
+//        if cnt > 0 {
+//            output += tmp
+//        }
+//    }
+	output += "\n}\n"
 
 	fmt.Println(output)
+}
+
+func makeRank(lst []*Node, nodetype int) string {
+    ret := ""
+    for idx :=0; idx < len(lst); idx++ {
+        node := lst[idx]
+
+        cnt := 0
+        tmp := ""
+        if nodetype == TypeLoop {
+            tmp = fmt.Sprintf("{rank = same; lp%d; ", getIndex(lst, node)+1)
+        } else if nodetype == TypeDecision {
+            tmp = fmt.Sprintf("{rank = same; dec%d; ", getIndex(lst, node)+1)
+        } else {
+            continue
+        }
+        for _, v := range node.children {
+            if v.nodetype == TypeLoop {
+                tmp += fmt.Sprintf("lp%d; ", getIndex(lpList, v)+1)
+                cnt++
+            } else if v.nodetype == TypeDecision {
+                tmp += fmt.Sprintf("dec%d; ", getIndex(decList, v)+1)
+                cnt++
+            } else {
+                // nop
+            }
+        }
+        tmp += "}\n"
+        if cnt > 0 {
+           ret += tmp
+        }
+    }
+    return ret 
 }
 
 func main() {
